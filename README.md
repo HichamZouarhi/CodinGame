@@ -66,3 +66,15 @@ Language : Scala</br>
 Difficulty : medium</br>
 Score : 100%</br>
 Language : Dart</br>
+
+**Super Computer**
+
+Difficulty : hard</br>
+Score : 100%</br>
+Language : Python 3</br>
+
+**CGX Formatter**
+
+Difficulty : hard</br>
+Score : 100%</br>
+Language : Python 3</br>
