@@ -78,3 +78,9 @@ Language : Python 3</br>
 Difficulty : hard</br>
 Score : 100%</br>
 Language : Python 3</br>
+
+**Shadow of the knight : Episode 2**
+
+Difficulty : very hard</br>
+Score : 62%</br>
+Language : Python 3</br>
