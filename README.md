@@ -84,3 +84,21 @@ Language : Python 3</br>
 Difficulty : very hard</br>
 Score : 100%</br>
 Language : Python 3</br>
+
+**Unit Fractions**
+
+Difficulty : easy</br>
+Score : 100%</br>
+Language : Javascript</br>
+
+**Rock Paper Scisors Lizard Spock**
+
+Difficulty : easy</br>
+Score : 100%</br>
+Language : Javascript</br>
+
+**Bank Robbers**
+
+Difficulty : easy</br>
+Score : 100%</br>
+Language : Java</br>
