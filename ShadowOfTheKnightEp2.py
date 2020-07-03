@@ -1,131 +1,77 @@
 import sys
 import math
-import random
-from copy import deepcopy
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
-# w: width of the building.
-# h: height of the building.
+ 
 w, h = [int(i) for i in input().split()]
-n = int(input())  # maximum number of turns before game over.
+n = input()
 
 x0, y0 = [int(i) for i in input().split()]
-curr_pos = [x0, y0]
+x, y = x0, y0
+x_search, y_search = range(w), range(h)
 
-prev_grid = [[0 for i in range(w)] for j in range(h)]
-curr_grid = [[0 for i in range(w)] for j in range(h)]
-# print(str(w) + " " + str(h), file = sys.stderr)
-# print(prev_grid, file = sys.stderr)
-
-def distance(ax, ay, bx, by):
-    return math.sqrt((bx - ax) ** 2 + (by - ay) ** 2)
-
-def get_next_pos(grid, curr_pos):
-    pos_seq = []
-    for i in range(h):
-        for j in range(w):    
-            if grid[i][j] != -1:
-                pos_seq.append([j, i])
-            
-    # pos_seq.remove(curr_pos)
-    return random.choice(pos_seq)
-
-def distance_grid(grid, pos):
-    for i in range(h):
-        for j in range(w):
-            if grid[i][j] != -1:
-                grid[i][j] = distance(j, i, pos[0], pos[1])
+def narrow_search(previous_position, next_position, search_range):
+    if info == "UNKNOWN":
+        pass
+    elif info == "SAME":
+        search_range = [i for i in search_range if abs(previous_position - i) == abs(next_position - i)]
+    elif info == "WARMER":
+        search_range = [i for i in search_range if abs(previous_position - i) > abs(next_position - i)]
+    elif info == "COLDER":
+        search_range = [i for i in search_range if abs(previous_position - i) < abs(next_position - i)]
     
-    return deepcopy(grid)
+    return search_range
 
-def compare_grids(grid1, grid2, eq, inversed = False):
-    for i in range(h):
-        for j in range(w):
-            if grid1[i][j] != -1 and grid2[i][j] != -1:
-                if eq:
-                    if grid1[i][j] != grid2[i][j]:
-                        grid2[i][j] = -1
-                elif inversed:
-                    if grid1[i][j] > grid2[i][j]:
-                        grid2[i][j] = -1
-                else:
-                    if grid1[i][j] < grid2[i][j]:
-                        grid2[i][j] = -1
-    return deepcopy(grid2)
+def lookup(x0, y0, x, y, x_search, y_search, info):
+    # xaxis dichotomy
+    if len(x_search) != 1:
+        x_search = narrow_search(x0, x, x_search)
+    #yaxis dichotomy
+    else:
+        y_search = narrow_search(y0, y, y_search)
+    
+    return x_search, y_search
+ 
+ 
+while 1:
+    info = input()
+    x_search, y_search = lookup(x0, y0, x, y, x_search, y_search, info)
 
-# game loop
-prev_pos = deepcopy(curr_pos)
-while True:
-    bomb_dir = input()  # Current distance to the bomb compared to previous distance (COLDER, WARMER, SAME or UNKNOWN)
+    x0,y0 = x,y
+    # dichotomy along x axis
+    if len(x_search) != 1:
+        # the bisection between x0 and x should cut the area in 2 so:
+        # (x + x0)/2 = (x_search[0] + x_search[-1])/2
+        # the 2 first cases narrow the search for test cases 6 and 8
+        # credit to ethiery for this one
+        
+        if (x0 == 0 and len(x_search) != w):
+            x = (3 * x_search[0] + x_search[-1]) // 2 
+        elif (x0 == w - 1 and len(x_search) != w):
+            x = (x_search[0] + 3 * x_search[-1]) // 2 - x0
+        else:
+            x = x_search[0] + x_search[-1] - x0
+        
+        # to avoid fixed points
+        if x == x0:
+            x += 1
+        x = min(max(x, 0), w-1)
+ 
+    else:
+    # transition to second dichotomy
+        if x != x_search[0]:
+            x = x0 = x_search[0]
+            print(x, y)
+            info = input()
+        # finishing
+        if len(y_search) == 1:
+            y = y_search[0]
+        # dichotomy along y axis
+        else:
+            if (y0 == 0 and len(y_search) != h):
+                y = (3 * y_search[0] + y_search[-1]) // 2
+            elif (y0 == h - 1 and len(y_search) != h):
+                y = (y_search[0] + 3 * y_search[-1]) // 2 - y0
+            else:
+                y = y_search[0] + y_search[-1] - y0
+            y = min(max(y, 0), h-1)
     
-    if bomb_dir == "UNKNOWN":
-        prev_pos = deepcopy(curr_pos)
-        next_pos = get_next_pos(curr_grid, prev_pos)
-        # curr_pos = deepcopy(next_pos)
-        # print(str(next_pos[0]) + " " + str(next_pos[1]))
-        # curr_pos = next_pos
-    elif bomb_dir == "SAME":
-        prev_pos = deepcopy(curr_pos)
-        curr_pos = deepcopy(next_pos)
-        print(str(prev_pos) + " -> " + str(curr_pos), file = sys.stderr)
-        prev_grid = distance_grid(prev_grid, prev_pos)
-        curr_grid = distance_grid(curr_grid, curr_pos)
-        print("PREV GRID --------" + str(prev_pos), file = sys.stderr)
-        for row in prev_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        
-        print("CURR GRID --------" + str(curr_pos), file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        curr_grid = compare_grids(prev_grid, curr_grid, eq = True)
-        print("COMPARE GRID ------------", file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        # print(str(curr_pos[0]) + " " + str(curr_pos[1]))
-        next_pos = get_next_pos(curr_grid, curr_pos)
-    elif bomb_dir == "WARMER":
-        prev_pos = deepcopy(curr_pos)
-        curr_pos = deepcopy(next_pos)
-        print(str(prev_pos) + " -> " + str(curr_pos), file = sys.stderr)
-        prev_grid = distance_grid(prev_grid, prev_pos)
-        curr_grid = distance_grid(curr_grid, curr_pos)
-        print("PREV GRID --------" + str(prev_pos), file = sys.stderr)
-        for row in prev_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        
-        print("CURR GRID --------" + str(curr_pos), file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        curr_grid = compare_grids(prev_grid, curr_grid, eq = False, inversed = False)
-        print("COMPARE GRID ------------", file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        # print(str(curr_pos[0]) + " " + str(curr_pos[1]))
-        next_pos = get_next_pos(curr_grid, curr_pos)
-    elif bomb_dir == "COLDER":
-        prev_pos = deepcopy(curr_pos)
-        curr_pos = deepcopy(next_pos)
-        print(str(prev_pos) + " -> " + str(curr_pos), file = sys.stderr)
-        prev_grid = distance_grid(prev_grid, prev_pos)
-        curr_grid = distance_grid(curr_grid, curr_pos)
-        print("PREV GRID --------" + str(prev_pos), file = sys.stderr)
-        for row in prev_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        
-        print("CURR GRID --------" + str(curr_pos), file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        
-        curr_grid = compare_grids(prev_grid, curr_grid, eq = False, inversed = True)
-        print("COMPARE GRID ------------", file = sys.stderr)
-        for row in curr_grid:
-            print([int(col) for col in row], file = sys.stderr)
-        # print(str(curr_pos[0]) + " " + str(curr_pos[1]))
-        next_pos = get_next_pos(curr_grid, curr_pos)
-    
-    print(str(next_pos[0]) + " " + str(next_pos[1]))
-    prev_grid = deepcopy(curr_grid)
-
-    
+    print(x, y)
