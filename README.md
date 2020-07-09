@@ -102,3 +102,15 @@ Language : Javascript</br>
 Difficulty : easy</br>
 Score : 100%</br>
 Language : Java</br>
+
+**War**
+
+Difficulty : medium</br>
+Score : 100%</br>
+Language : Java</br>
+
+**Sudoku Validator**
+
+Difficulty : easy</br>
+Score : 100%</br>
+Language : C#</br>
