@@ -114,3 +114,9 @@ Language : Java</br>
 Difficulty : easy</br>
 Score : 100%</br>
 Language : C#</br>
+
+**Network Cabling**
+
+Difficulty : medium</br>
+Score : 100%</br>
+Language : Java</br>
