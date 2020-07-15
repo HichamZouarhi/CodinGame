@@ -120,3 +120,9 @@ Language : C#</br>
 Difficulty : medium</br>
 Score : 100%</br>
 Language : Java</br>
+
+**Genome Sequence**
+
+Difficulty : hard</br>
+Score : 100%</br>
+Language : Java</br>
