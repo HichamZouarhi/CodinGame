@@ -126,3 +126,21 @@ Language : Java</br>
 Difficulty : hard</br>
 Score : 100%</br>
 Language : Java</br>
+
+**Conway Sequence**
+
+Difficulty : medium</br>
+Score : 100%</br>
+Language : Java</br>
+
+**1D Spreadsheet**
+
+Difficulty : easy</br>
+Score : 100%</br>
+Language : Java</br>
+
+**Roller Coster**
+
+Difficulty : hard</br>
+Score : 100%</br>
+Language : Clojure</br>
