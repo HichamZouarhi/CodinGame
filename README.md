@@ -144,3 +144,15 @@ Language : Java</br>
 Difficulty : hard</br>
 Score : 100%</br>
 Language : Clojure</br>
+
+**Mayan Calculation**
+
+Difficulty : medium</br>
+Score : 100%</br>
+Language : Java</br>
+
+**Scrabble**
+
+Difficulty : medium</br>
+Score : 100%</br>
+Language : Java</br>
